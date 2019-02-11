@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { states$ } from '../../store.js'
 import style from './style';
 
 export default class Profile extends Component {
