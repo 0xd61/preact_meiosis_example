@@ -5,29 +5,30 @@ const profile1 = {
     count: 10,
     blah: 12
   },
-  actions: update => {
+  actions: update$ => {
     return {
       increment: () => {
-        update(state => {
+        update$(state => {
           setTimeout( () => state.profile1.count += 1, 3000);
           return state;
         });
-      }
+      },
     };
   }
 };
+
 const profile2 = {
   initialState: {
     count: 10,
   },
-  actions: update => {
+  actions: update$ => {
     return {
       increment: () => {
-        update(state => {
+        update$(state => {
           state.profile2.count += 1;
           return state;
         });
-      }
+      },
     };
   }
 };
@@ -39,14 +40,14 @@ const app = {
   },
   actions: update => {
     return {
-      profile1: profile1.actions(update),
-      profile2: profile2.actions(update)
+      profile1: profile1.actions(update$),
+      profile2: profile2.actions(update$)
     };
   }
 };
 
-const update = flyd.stream();
+const update$ = flyd.stream();
 
-export const states = flyd.scan((state, patch) => patch(state), app.initialState, update);
+export const states$ = flyd.scan((state, patch) => patch(state), app.initialState, update$);
 
-export const actions = app.actions(update);
+export const actions = app.actions(update$);

@@ -44,6 +44,7 @@ export default class Profile extends Component {
         <p>
         The current state is: {state.count}
           <button onClick={actions.increment}>Increment</button>
+          <button onClick={actions.doubleFunction}>Double</button>
         </p>
 			</div>
 		);

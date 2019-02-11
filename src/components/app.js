@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
-import { states, actions } from '../store.js'
+import { states$, actions } from '../store.js'
 
 import Header from './header';
 
@@ -20,7 +20,7 @@ export default class App extends Component {
 
   componentWillMount() {
     var setState = this.setState.bind(this);
-    states.map(state => {
+    states$.map(state => {
       setState(state);
     });
   }
