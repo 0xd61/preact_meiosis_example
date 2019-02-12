@@ -1,6 +1,6 @@
 import flyd from 'flyd';
 
-const profile1 = {
+const profile = {
   initialState: {
     count: 10,
     blah: 12
@@ -9,39 +9,27 @@ const profile1 = {
     return {
       increment: () => {
         update$(state => {
-          setTimeout( () => state.profile1.count += 1, 3000);
+          state.profile.count += 1;
           return state;
         });
       },
-    };
-  }
-};
-
-const profile2 = {
-  initialState: {
-    count: 10,
-  },
-  actions: update$ => {
-    return {
-      increment: () => {
+      reset: () => {
         update$(state => {
-          state.profile2.count += 1;
+          state.profile.count = 10;
           return state;
         });
-      },
+      }
     };
   }
 };
 
 const app = {
   initialState: {
-    profile1: profile1.initialState,
-    profile2: profile2.initialState
+    profile: profile.initialState,
   },
   actions: update => {
     return {
-      profile1: profile1.actions(update$),
-      profile2: profile2.actions(update$)
+      profile: profile.actions(update$),
     };
   }
 };

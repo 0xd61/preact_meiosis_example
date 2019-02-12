@@ -32,8 +32,8 @@ export default class App extends Component {
 				<Header />
 				<Router onChange={this.handleRoute}>
 					<Home path="/" />
-				  <Profile state={state.profile1} actions={actions.profile1} path="/profile/" user="me" />
-				  <Profile state={state.profile2} actions={actions.profile2} path="/profile/:user" />
+				  <Profile state={state.profile} actions={actions.profile} path="/profile/" user="me" />
+				  <Profile state={state.profile} actions={actions.profile} path="/profile/:user" />
 				</Router>
         <pre>{JSON.stringify(state, null, 4)}</pre>
 			</div>
