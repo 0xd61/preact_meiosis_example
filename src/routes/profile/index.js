@@ -17,6 +17,7 @@ export default class Profile extends Component {
 	increment = () => {
 		this.setState({ count: this.state.count+1 });
 	};
+
   showReset = (value) => {
     this.setState({ resetButton: value });
   }

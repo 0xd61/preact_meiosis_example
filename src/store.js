@@ -1,41 +1,75 @@
 import flyd from 'flyd';
+//import {worker} from 'persistence-manager.js';
 
-const profile = {
-  initialState: {
-    count: 10,
-    blah: 12
-  },
-  actions: update$ => {
+const serviceA = {
+  initial: () => {
     return {
-      increment: () => {
-        update$(state => {
-          state.profile.count += 1;
-          return state;
-        });
-      },
-      reset: () => {
-        update$(state => {
-          state.profile.count = 10;
-          return state;
-        });
-      }
+      description: "this is A"
+    };
+  },
+  service: (state) => {
+    return state => state;
+  }
+};
+
+const serviceB = {
+  initial: () => {
+    return {
+      name: "this is B",
+      id: 0
+    };
+  },
+  service: (state) => {
+    return state => {
+      console.log(state);
+      state.name = "this is B " + state.id;
+      return state;
     };
   }
 };
 
-const app = {
-  initialState: {
-    profile: profile.initialState,
-  },
-  actions: update => {
-    return {
-      profile: profile.actions(update$),
-    };
-  }
+const services = [serviceA, serviceB];
+const service = state => services
+      .map(s => s.service)
+      .reduce((x, f) => f(x)(x), state);
+
+const initialState = () => {
+  const state =
+        { boxes: [],
+          colors:
+          [ "red",
+            "purple",
+            "blue"
+          ]
+        };
+  return Object.assign({},
+                       state,
+                       services
+                       .map(service => service.initial(state))
+                       .reduce((state, obj) => Object.assign(state, obj), {}));
 };
 
 const update$ = flyd.stream();
+const T = (x, f) => f(x);
+export const states$ = flyd.scan(T, initialState(), update$).map(service);
 
-export const states$ = flyd.scan((state, patch) => patch(state), app.initialState, update$);
+export const actions = ((update$) => {
+  return {
+    Increment: () => {
+      return update$(state => {
+        state.id += 1;
+        return state;
+      });
+    },
+    Decrement: () => {
+      return update$(state => {
+        state.id -=1;
+        return state;
+      });
+    }
+  };
+})(update$);
 
-export const actions = app.actions(update$);
+
+actions.Increment();
+actions.Increment();
